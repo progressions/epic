@@ -33,7 +33,13 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.rcov = true
 end
 
-task :spec => :check_dependencies
+
+task :bundle do
+  require 'vendor/gems/environment'
+  Bundler.require_env
+end
+
+task :spec => [:bundle, :check_dependencies]
 
 task :default => :spec
 

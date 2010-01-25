@@ -1,8 +1,7 @@
 require 'file'
-require 'rubygems'
-require 'w3c_validators'
-require 'active_support'
 require 'g'
+require 'active_support'
+require 'w3c_validators'
 
 module Epic
   module Validator
@@ -108,9 +107,9 @@ module Epic
             f.puts output
           end
 
-          jslint_path = File.expand_path("#{File.dirname(__FILE__)}/jslint.js")
+          jslint_path = File.expand_path("#{File.dirname(__FILE__)}/../vendor/ext/jslint.js")
           raise "#{jslint_path} does not exist" unless File.exists?(jslint_path)
-          rhino_path = File.expand_path("#{File.dirname(__FILE__)}/js.jar")
+          rhino_path = File.expand_path("#{File.dirname(__FILE__)}/../vendor/ext/js.jar")
           raise "#{rhino_path} does not exist" unless File.exists?(rhino_path)
           
           results = F.execute("java -jar #{rhino_path} #{jslint_path} #{js_fragment_path}", :return => true)
