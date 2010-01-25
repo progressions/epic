@@ -19,3 +19,9 @@ rdoc
 pkg
 
 ## PROJECT::SPECIFIC
+
+vendor/bin/*
+vendor/gems/*
+!vendor/gems/cache/
+features/data/servers
+features/data/tmp

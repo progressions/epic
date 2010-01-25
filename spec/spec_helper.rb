@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'epic'
 require 'spec'
 require 'spec/autorun'
+require 'stubs'
 
 Spec::Runner.configure do |config|
   
