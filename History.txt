@@ -1,3 +1,7 @@
 == 0.0.1 2010-01-25
+  * bug fixes
+    * fixed path
+
+== 0.0.1 2010-01-25
   * validates JavaScript and HTML (CSS coming soon)
   
