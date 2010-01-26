@@ -1,4 +1,4 @@
-== 0.0.3 (in Git)
+== 0.0.3 2010-01-25
   * major enhancements
     * added YUI compressor to compress JavaScript and CSS
 
