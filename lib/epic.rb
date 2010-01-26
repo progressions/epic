@@ -1,4 +1,5 @@
-require 'file'
+require 'rubygems'
+require 'lib/file'
 require 'g'
 require 'active_support'
 require 'w3c_validators'
@@ -98,10 +99,14 @@ module Epic
         
         output = pre_process(output)
         
+        FileUtils.mkdir_p(tmp_path)
+        
         js_fragment_path = File.expand_path("#{tmp_path}/#{File.basename(path)}_fragment")
         fragment_display_path = display_path(js_fragment_path)
     
-        unless File.exists?(js_fragment_path)
+        if File.exists?(js_fragment_path)
+          puts "That already exists?"
+        else
           File.open(js_fragment_path,'w') do |f|
             f.puts jslint_settings if use_jslint_settings?
             f.puts output
