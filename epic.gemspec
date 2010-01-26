@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{epic}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Coleman"]
@@ -30,13 +30,17 @@ Gem::Specification.new do |s|
      "bin/epic",
      "epic.gemspec",
      "lib/epic.rb",
-     "lib/file.rb",
+     "lib/epic/base.rb",
+     "lib/epic/compressor.rb",
+     "lib/epic/validator.rb",
+     "spec/compressor_spec.rb",
      "spec/epic_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/stubs.rb",
      "vendor/ext/js.jar",
-     "vendor/ext/jslint.js"
+     "vendor/ext/jslint.js",
+     "vendor/ext/yuicompressor-2.4.2.jar"
   ]
   s.homepage = %q{http://github.com/progressions/epic}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -44,7 +48,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Epic validation of HTML, JavaScript and CSS}
   s.test_files = [
-    "spec/epic_spec.rb",
+    "spec/compressor_spec.rb",
+     "spec/epic_spec.rb",
      "spec/spec_helper.rb",
      "spec/stubs.rb"
   ]

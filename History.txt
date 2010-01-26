@@ -1,4 +1,8 @@
-== 0.0.1 2010-01-25
+== 0.0.3 (in Git)
+  * major enhancements
+    * added YUI compressor to compress JavaScript and CSS
+
+== 0.0.2 2010-01-25
   * bug fixes
     * fixed path
 

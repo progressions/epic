@@ -81,7 +81,7 @@ describe "Validator" do
       end
       
       it "should set jslint settings" do
-        Epic::Validator::JavaScript.configure do |config|
+        Epic::Base.configure do |config|
           config.jslint_settings = @jslint_settings
         end
         Epic::Validator::JavaScript.new.jslint_settings.should == @jslint_settings
