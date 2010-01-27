@@ -6,7 +6,7 @@ module Epic #:nodoc
   class Base
     class << self
       def configuration
-        @@configuration ||= Epic::Configuration.new
+        @configuration ||= Epic::Configuration.new
       end
     
       def configure
@@ -27,7 +27,7 @@ module Epic #:nodoc
     end
 
     def configuration
-      self.class.configuration
+      Epic::Base.configuration
     end
 
     # Parses out the <tt>base_path</tt> setting from a path to display it in a
@@ -43,7 +43,7 @@ module Epic #:nodoc
     end
     
     def tmp_path
-      configuration.tmp_path || ""
+      configuration.tmp_path || "#{base_path}/tmp" || ""
     end
   end
 end

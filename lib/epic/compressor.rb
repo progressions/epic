@@ -25,8 +25,6 @@ module Epic #:nodoc:
     # TODO: Convert it to an object, so you instantiate the Compressor class and then call it
     # on a file or a string.
     #
-    # TODO: Get some stringify_keys! action going so you can send in symbols or strings.
-    #
     class Base < Epic::Base
       def self.compress(path, options={})
         options.stringify_keys!

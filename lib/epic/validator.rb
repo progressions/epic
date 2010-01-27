@@ -1,5 +1,3 @@
-require 'epic/base'
-
 module Epic
   module Validator
     class HTML < Epic::Base
@@ -63,10 +61,10 @@ module Epic
         
         js_fragment_path = File.expand_path("#{tmp_path}/#{File.basename(path)}_fragment")
         fragment_display_path = display_path(js_fragment_path)
+        
+        valid = true
     
-        if File.exists?(js_fragment_path)
-          puts "That already exists?"
-        else
+        unless File.exists?(js_fragment_path)
           File.open(js_fragment_path,'w') do |f|
             f.puts jslint_settings if use_jslint_settings?
             f.puts output
@@ -81,6 +79,7 @@ module Epic
 
           if results =~ /jslint: No problems found/
             $stdout.puts "OK"
+            valid = true
           else
             $stdout.puts "errors found!"
             results.split("\n").each do |result|
@@ -93,10 +92,12 @@ module Epic
               end
             end
             message = "JavaScript Errors embedded in #{display}"
-            g(message)
-            raise message
+            # g(message)
+            valid = false
+            # raise message
           end
         end
+        valid
       end
     end
     

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{epic}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Coleman"]
-  s.date = %q{2010-01-25}
+  s.date = %q{2010-01-26}
   s.default_executable = %q{epic}
   s.description = %q{Epic validator, wraps validation for HTML, JavaScript and CSS.}
   s.email = %q{progressions@gmail.com}
@@ -29,6 +29,14 @@ Gem::Specification.new do |s|
      "VERSION",
      "bin/epic",
      "epic.gemspec",
+     "features/data/html/invalid.html",
+     "features/data/html/valid.html",
+     "features/data/javascripts/invalid.js",
+     "features/data/javascripts/valid.js",
+     "features/data/stylesheets/valid.css",
+     "features/step_definitions/file_steps.rb",
+     "features/support/env.rb",
+     "features/validator.feature",
      "lib/epic.rb",
      "lib/epic/base.rb",
      "lib/epic/compressor.rb",
