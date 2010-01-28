@@ -1,3 +1,7 @@
+== 0.0.4 (in Git)
+  * minor enhancements
+    * don't growl and raise errors on validation, just display errors
+
 == 0.0.3 2010-01-25
   * major enhancements
     * added YUI compressor to compress JavaScript and CSS
