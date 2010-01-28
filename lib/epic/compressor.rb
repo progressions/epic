@@ -83,16 +83,7 @@ module Epic #:nodoc:
             $stdout.puts "OK"
           end
         end
-
-        # The compressed file should exist now. If it does, use it. If not, raise an error.
-        #
-        if File.exists?(compressed_path)
-          compressed = File.read(compressed_path)
-        else
-          raise "File does not exist: #{compressed_display_path}"
-        end
-      
-        compressed      
+        File.read(compressed_path)
       end
     end
     

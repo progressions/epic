@@ -16,11 +16,12 @@ module Epic #:nodoc
       # Parses out the <tt>base_path</tt> setting from a path to display it in a
       # less verbose way.
       #
-      def display_path(path)
-        path = File.expand_path(path)
-        path.gsub(base_path.to_s, "")
+      def display_path(filename=nil)
+        filename ||= path
+        display_path = File.expand_path(filename)
+        display_path.gsub(base_path.to_s, "")
       end
-      
+    
       def base_path
         configuration.base_path
       end
@@ -33,9 +34,10 @@ module Epic #:nodoc
     # Parses out the <tt>base_path</tt> setting from a path to display it in a
     # less verbose way.
     #
-    def display_path(path)
-      path = File.expand_path(path)
-      path.gsub(base_path.to_s, "")
+    def display_path(filename=nil)
+      filename ||= path
+      display_path = File.expand_path(filename)
+      display_path.gsub(base_path.to_s, "")
     end
     
     def base_path      

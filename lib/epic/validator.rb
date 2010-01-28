@@ -1,17 +1,43 @@
 module Epic
   module Validator
-    class HTML < Epic::Base
+    class Base < Epic::Base
+      attr_accessor :path, :errors
+      
+      def initialize(path=nil)
+        @path = path
+        @errors = []
+      end
+      
+      def errors
+        @errors ||= []
+      end
+
+      def display_errors
+        errors.each do |err|
+          $stdout.puts
+          $stdout.puts err.to_s
+        end        
+      end
+    end
+    
+    class HTML < Epic::Validator::Base
       def validator
         @validator ||= W3CValidators::MarkupValidator.new
       end
       
-      def validate(path)
-        $stdout.print "   #{path}  validating . . . "
+      def doctype
+        configuration.doctype || "HTML 4.01 Transitional"
+      end
+      
+      def validate(filename=nil)
+        @path = filename || path
+        $stdout.print "   #{display_path}  validating . . . "
         
-        doctype = configuration.doctype || "HTML 4.01 Transitional"
         validator.set_doctype!(doctype)
 
         results = validator.validate_file(path)
+        
+        @errors = results.errors
         
         valid = results.errors.length <= 0
         
@@ -19,10 +45,7 @@ module Epic
           $stdout.puts "OK"
         else
           $stdout.puts "validation errors"
-          results.errors.each do |err|
-            $stdout.puts
-            $stdout.puts err.to_s
-          end
+          display_errors
         end
         
         valid
@@ -30,12 +53,8 @@ module Epic
     end
     
     class JavaScript < Base
-      def use_jslint_settings?
-        !jslint_settings.blank?
-      end
-      
       def jslint_settings
-        configuration.jslint_settings
+        configuration.jslint_settings.to_s
       end
       
       def jslint_settings_count
@@ -43,61 +62,68 @@ module Epic
       end
       
       def pre_process(content)
-        content
+        jslint_settings + content
       end
-    
-      def validate(path)
-        display = display_path(path)
-        $stdout.print "   #{display}  validating . . . "
-        output = ""
       
-        File.open(path) do |f|
-          output = f.read
-        end
+      def js_fragment_path
+        File.expand_path("#{tmp_path}/#{File.basename(path)}_fragment")
+      end
+
+      def jslint_path
+        jslint_path = File.expand_path("#{File.dirname(__FILE__)}/../../vendor/ext/jslint.js")
+        raise "#{jslint_path} does not exist" unless File.exists?(jslint_path)
+        jslint_path
+      end
+      
+      def rhino_path
+        rhino_path = File.expand_path("#{File.dirname(__FILE__)}/../../vendor/ext/js.jar")
+        raise "#{rhino_path} does not exist" unless File.exists?(rhino_path)
+        rhino_path
+      end
+      
+      def valid_results?(results)
+        fragment_display_path = display_path(js_fragment_path)
+        unless results =~ /jslint: No problems found/
+          results.split("\n").each do |result|
+            if result =~ /line (\d+) character (\d+): (.*)/
+              line_number = $1.to_i
+              error = "Error at #{fragment_display_path} line #{line_number-jslint_settings_count} character #{$2}: #{$3}"
+              error += F.get_line_from_file(js_fragment_path, line_number)
         
-        output = pre_process(output)
+              errors << error
+            end
+          end
+        end
+        errors.length <= 0
+      end
+      
+      def validate_path
+        raw_output = File.read(path)        
+        output = pre_process(raw_output)
         
         FileUtils.mkdir_p(tmp_path)
         
-        js_fragment_path = File.expand_path("#{tmp_path}/#{File.basename(path)}_fragment")
-        fragment_display_path = display_path(js_fragment_path)
-        
-        valid = true
-    
-        unless File.exists?(js_fragment_path)
-          File.open(js_fragment_path,'w') do |f|
-            f.puts jslint_settings if use_jslint_settings?
-            f.puts output
-          end
-
-          jslint_path = File.expand_path("#{File.dirname(__FILE__)}/../../vendor/ext/jslint.js")
-          raise "#{jslint_path} does not exist" unless File.exists?(jslint_path)
-          rhino_path = File.expand_path("#{File.dirname(__FILE__)}/../../vendor/ext/js.jar")
-          raise "#{rhino_path} does not exist" unless File.exists?(rhino_path)
-          
-          results = F.execute("java -jar #{rhino_path} #{jslint_path} #{js_fragment_path}", :return => true)
-
-          if results =~ /jslint: No problems found/
-            $stdout.puts "OK"
-            valid = true
-          else
-            $stdout.puts "errors found!"
-            results.split("\n").each do |result|
-              if result =~ /line (\d+) character (\d+): (.*)/
-                line_number = $1.to_i
-                error = "Error at #{fragment_display_path} line #{line_number-jslint_settings_count} character #{$2}: #{$3}"
-                error += F.get_line_from_file(js_fragment_path, line_number)
-          
-                $stdout.puts error
-              end
-            end
-            message = "JavaScript Errors embedded in #{display}"
-            # g(message)
-            valid = false
-            # raise message
-          end
+        File.open(js_fragment_path,'w') do |f|
+          f.puts output
         end
-        valid
+
+        F.execute("java -jar #{rhino_path} #{jslint_path} #{js_fragment_path}", :return => true)
+      end
+      
+      def validate(filename=nil)
+        @path = filename || path
+        $stdout.print "   #{display_path}  validating . . . "
+        
+        results = validate_path
+        
+        if valid_results?(results)
+          $stdout.puts "OK"
+        else
+          $stdout.puts "errors found!"
+          display_errors
+        end
+        
+        errors.length <= 0
       end
     end
     
@@ -111,7 +137,7 @@ module Epic
     end
     
     class Stylesheet < Base
-      def validate(filename)
+      def validate(path=nil)
         true
       end
     end
