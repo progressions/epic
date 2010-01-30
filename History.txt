@@ -1,6 +1,9 @@
-== 0.0.4 (in Git)
+== 0.0.4 2010-01-30
+  * major enhancements
+    * compression and validation performed by instances rather the class
   * minor enhancements
     * don't growl and raise errors on validation, just display errors
+    * internal refactoring
 
 == 0.0.3 2010-01-25
   * major enhancements

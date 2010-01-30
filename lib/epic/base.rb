@@ -12,19 +12,6 @@ module Epic #:nodoc
       def configure
         yield configuration
       end
-
-      # Parses out the <tt>base_path</tt> setting from a path to display it in a
-      # less verbose way.
-      #
-      def display_path(filename=nil)
-        filename ||= path
-        display_path = File.expand_path(filename)
-        display_path.gsub(base_path.to_s, "")
-      end
-    
-      def base_path
-        configuration.base_path
-      end
     end
 
     def configuration

@@ -13,7 +13,7 @@ Before do
     BASE_PATH = File.expand_path("./features/data")
   end
 
-  @exception = nil
+  @exceptions = []
   @files = []
 
   $rspec_mocks ||= Spec::Mocks::Space.new  
@@ -26,5 +26,6 @@ After do
     system "rm #{file}"
   end
   
-  system "rm ./features/data/tmp/*"
+  system "rm -rf #{BASE_PATH}/tmp"
+  system "mkdir #{BASE_PATH}/tmp"
 end

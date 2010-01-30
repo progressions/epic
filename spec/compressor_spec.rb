@@ -11,7 +11,7 @@ describe "Compressor" do
       File.stub!(:exists?).with(/file.js/).and_return(true)
       @file = "compressed file"
       File.stub(:read).and_return(@file)
-      Epic::Compressor::Base.compress("file.js", "type" => "js").should == @file
+      Epic::Compressor.new("file.js").compress.should == @file
     end
     
     describe "generate a compressed file if one doesn't exist" do
@@ -22,47 +22,47 @@ describe "Compressor" do
       
       it "should log what it's doing" do
         $stdout.should_receive(:print).with(/file.js  compressing . . ./)
-        Epic::Compressor::Base.compress("file.js", "type" => "js")
+        Epic::Compressor.new("file.js").compress
       end
       
       it "should run the compressor" do
         F.should_receive(:execute).with(/yuicompressor/, :return => true).and_return("")
-        Epic::Compressor::Base.compress("file.js", "type" => "js")
+        Epic::Compressor.new("file.js").compress
       end
       
       describe "options" do
         it "should set nomunge" do
           F.should_receive(:execute).with(/nomunge/, :return => true).and_return("")
-          Epic::Compressor::Base.compress("file.js", "type" => "js", "obfuscate" => true)
+          Epic::Compressor.new("file.js").compress("obfuscate" => true)
         end
       
         it "should not set nomunge" do
           F.stub!(:execute).with(/yuicompressor/, :return => true).and_return("")
           F.should_not_receive(:execute).with(/nomunge/, :return => true).and_return("")
-          Epic::Compressor::Base.compress("file.js", "type" => "js", "obfuscate" => false)
+          Epic::Compressor.new("file.js").compress("obfuscate" => false)
         end
       
         it "should set verbose" do
           F.should_receive(:execute).with(/verbose/, :return => true).and_return("")
-          Epic::Compressor::Base.compress("file.js", "type" => "js", "verbose" => true)
+          Epic::Compressor.new("file.js").compress("verbose" => true)
         end
       
         it "should not set verbose" do
           F.stub!(:execute).with(/yuicompressor/, :return => true).and_return("")
           F.should_not_receive(:execute).with(/verbose/, :return => true).and_return("")
-          Epic::Compressor::Base.compress("file.js", "type" => "js", "verbose" => false)
+          Epic::Compressor.new("file.js").compress("verbose" => false)
         end
       
         it "should set preserve-semi on javascript" do
           F.should_receive(:execute).with(/preserve-semi/, :return => true).and_return("")
-          Epic::Compressor::Base.compress("file.js", "type" => "js")
+          Epic::Compressor.new("file.js").compress
         end
       
         it "should not set preserve-semi on css" do
           File.stub!(:exists?).with(/file.css/).and_return(true)
           F.stub!(:execute).with(/yuicompressor/, :return => true).and_return("")
           F.should_not_receive(:execute).with(/preserve-semi/, :return => true).and_return("")
-          Epic::Compressor::Base.compress("file.css", "type" => "css")
+          Epic::Compressor.new("file.css").compress
         end
       end
       
@@ -73,55 +73,22 @@ describe "Compressor" do
         
         it "should raise an exception" do
           lambda {
-            Epic::Compressor::Base.compress("file.js", "type" => "js")
-          }.should raise_error(/JavaScript errors/)
-        end
-        
-        it "should growl" do
-          @g.should_receive(:notify)
-          lambda {
-            Epic::Compressor::Base.compress("file.js", "type" => "js")
+            Epic::Compressor.new("file.js").compress
           }.should raise_error(/JavaScript errors/)
         end
         
         it "should show the source code" do
           F.should_receive(:get_line_from_file).with("file.js", 12).and_return("")
           lambda {
-            Epic::Compressor::Base.compress("file.js", "type" => "js")
+            Epic::Compressor.new("file.js").compress
           }.should raise_error(/JavaScript errors/)
         end
       end
       
       it "should report OK" do
         $stdout.should_receive(:puts).with("OK")
-        Epic::Compressor::Base.compress("file.js", "type" => "js")
+        Epic::Compressor.new("file.js").compress
       end
-      
-      it "should raise an error if the compressed file doesn't exist" do
-        # File.stub!(:exists?).with(/file.js/).and_return(true)
-        # File.stub!(:exists?).with(/file.js.min/).and_return(false)
-        # lambda {
-          Epic::Compressor::Base.compress("file.js", "type" => "js")
-        # }.should raise_error(/File does not exist/)
-      end
-    end
-  end
-  
-  describe "JavaScript" do
-    it "should call Base with type js" do
-      File.stub(:exists?).with(/file.js/).and_return(true)
-      @file = "compressed file"
-      File.stub(:read).and_return(@file)
-      Epic::Compressor::JavaScript.compress("file.js").should == @file
-    end
-  end
-  
-  describe "Stylesheet" do
-    it "should call Base with type css" do
-      File.stub(:exists?).with(/file.css/).and_return(true)
-      @file = "compressed file"
-      File.stub(:read).and_return(@file)
-      Epic::Compressor::Stylesheet.compress("file.css").should == @file
     end
   end
 end

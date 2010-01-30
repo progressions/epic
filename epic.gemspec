@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Coleman"]
-  s.date = %q{2010-01-26}
+  s.date = %q{2010-01-30}
   s.default_executable = %q{epic}
   s.description = %q{Epic validator, wraps validation for HTML, JavaScript and CSS.}
   s.email = %q{progressions@gmail.com}
@@ -40,12 +40,20 @@ Gem::Specification.new do |s|
      "lib/epic.rb",
      "lib/epic/base.rb",
      "lib/epic/compressor.rb",
+     "lib/epic/compressor/base.rb",
+     "lib/epic/compressor/javascript.rb",
+     "lib/epic/compressor/stylesheet.rb",
      "lib/epic/validator.rb",
+     "lib/epic/validator/base.rb",
+     "lib/epic/validator/html.rb",
+     "lib/epic/validator/javascript.rb",
+     "lib/epic/validator/json.rb",
+     "lib/epic/validator/stylesheet.rb",
      "spec/compressor_spec.rb",
-     "spec/epic_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/stubs.rb",
+     "spec/validator_spec.rb",
      "vendor/ext/js.jar",
      "vendor/ext/jslint.js",
      "vendor/ext/yuicompressor-2.4.2.jar"
@@ -57,9 +65,9 @@ Gem::Specification.new do |s|
   s.summary = %q{Epic validation of HTML, JavaScript and CSS}
   s.test_files = [
     "spec/compressor_spec.rb",
-     "spec/epic_spec.rb",
      "spec/spec_helper.rb",
-     "spec/stubs.rb"
+     "spec/stubs.rb",
+     "spec/validator_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
