@@ -1,4 +1,4 @@
-Given %r{I configure Epic::Base} do
+Given %r{I configure Epic::Base$} do
   Epic::Base.configure do |config|
     config.base_path = "#{BASE_PATH}"
   end
@@ -25,7 +25,6 @@ end
 
 Then /^an exception should have been raised with the message "([^\"]*)"$/ do |message|
   found_exception = false
-  puts @exceptions.inspect
   @exceptions.each do |exception|
     found_exception ||= exception =~ Regexp.new(message)
   end

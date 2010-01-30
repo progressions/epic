@@ -1,3 +1,7 @@
+== 0.0.5 (in Git)
+  * major enhancements
+    * choose between Google Closure and Yahoo! YUI Compressor
+
 == 0.0.4 2010-01-30
   * major enhancements
     * compression and validation performed by instances rather the class

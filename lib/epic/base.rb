@@ -1,6 +1,6 @@
 module Epic #:nodoc
   class Configuration
-    attr_accessor :base_path, :tmp_path, :doctype, :jslint_settings
+    attr_accessor :base_path, :tmp_path, :doctype, :jslint_settings, :compressor
   end
   
   class Base

@@ -4,6 +4,7 @@ describe "Compressor" do
   before(:each) do
     stub_io
     File.stub!(:exists?).with(/yuicompressor/).and_return(true)
+    File.stub!(:exists?).with("file.js").and_return(true)
   end
   
   describe "Base" do
@@ -16,8 +17,8 @@ describe "Compressor" do
     
     describe "generate a compressed file if one doesn't exist" do
       before(:each) do
-        File.stub!(:exists?).with(/file.js/).and_return(false, true)
-        File.stub!(:exists?).with(/file.css/).and_return(false, true)
+        File.stub!(:exists?).with(/file.js.min/).and_return(false, true)
+        File.stub!(:exists?).with(/file.css.min/).and_return(false, true)
       end
       
       it "should log what it's doing" do
