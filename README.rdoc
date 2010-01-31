@@ -2,6 +2,20 @@
 
 Epic validator which can validate HTML, JavaScript and CSS.
 
+== Usage
+
+From the command line:
+
+  epic compress <em>source</em> [destination]
+  
+  epic validate <em>source</em>
+  
+Command shortcuts can also be used:
+
+  epic c <em>source</em> [destination]
+  
+  epic v <em>source</em>
+
 == Note on Patches/Pull Requests
  
 * Fork the project.

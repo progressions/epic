@@ -6,18 +6,21 @@ module Epic #:nodoc:
       end
       
       def compress(params={})
-        # if the compressed_file exists, don't create it again
-        #
-        compress_path(params) unless File.exists?(compressed_path)
-      
-        File.read(compressed_path)
+        perform_compression(params)
       end
     
       # call the compressor
       #
       def execute_compressor(options_string)
-        command = "java -jar #{compressor_path} #{options_string} #{path} -o #{compressed_path} 2>&1"
-        result = F.execute(command, :return => true)          
+        command = "java -jar #{compressor_path} #{options_string} #{path} -o \"#{destination}\" 2>&1"
+        F.execute(command, :return => true)
+      end
+
+      # join the options together for appending to the command line
+      #
+      def convert_params_to_string(params)
+        options = parse_options(params)
+        options.map {|k,v| "--#{k} #{v}"}.join(" ")
       end
 
       # set options and defaults

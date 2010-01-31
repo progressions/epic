@@ -20,8 +20,6 @@ module Epic #:nodoc:
   #
   #   "preserve_semi"       true or false. Preserve unnecessary semicolons.
   #
-  # TODO: Make it support multiple compressors.
-  #
   class Compressor < Epic::Base
     include Epic::Errors
     
@@ -36,6 +34,10 @@ module Epic #:nodoc:
     # The type of compressor used--:yui or :closure
     #
     attr_accessor :compressor
+    
+    # The path where the compressed file will be written.
+    #
+    attr_accessor :destination
     
     def initialize(path)
       @path = path
@@ -71,7 +73,7 @@ module Epic #:nodoc:
       options_string = convert_params_to_string(params)
 
       result = execute_compressor(options_string)
-
+      
       parse_errors(result)
 
       if valid?
@@ -93,16 +95,27 @@ module Epic #:nodoc:
         end
       end          
     end
-
-    # join the options together for appending to the command line
-    #
-    def convert_params_to_string(params)
-      options = parse_options(params)
-      options.map {|k,v| "--#{k} #{v}"}.join(" ")
+    
+    def perform_compression(params={})
+      params.stringify_keys!
+      
+      @destination = params.delete("destination")
+      
+      # if the compressed_file exists, don't create it again
+      #
+      compress_path(params) unless File.exists?(destination)
+    
+      File.read(destination)      
     end
     
-    def compressed_path
-      @compressed_path ||= "#{path}.min"
+    def destination
+      unless @destination
+        @destination = "#{path}.min"
+      end
+      unless @destination =~ /^\//
+        @destination = File.expand_path(@destination)
+      end
+      @destination
     end
   
     def compressed_display_path

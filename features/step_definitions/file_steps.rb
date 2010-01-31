@@ -9,11 +9,17 @@ Given %r{the file "([^\"]*)" exists with "([^\"]*)"} do |filename, content|
 end
 
 And %r{I remove the file "([^\"]*)"} do |filename|
-  system "rm #{BASE_PATH}/#{filename}"
+  unless filename =~ /^\//
+    filename = "#{BASE_PATH}/#{filename}"
+  end
+  system "rm #{filename}"
 end
 
 When %r{I open the file "([^\"]*)"} do |filename|
-  @current_file = File.read("#{BASE_PATH}/#{filename}")
+  unless filename =~ /^\//
+    filename = "#{BASE_PATH}/#{filename}"
+  end
+  @current_file = File.read(filename)
 end
 
 Then %r{I should see "([^\"]*)"} do |content|

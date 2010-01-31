@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Coleman"]
-  s.date = %q{2010-01-30}
+  s.date = %q{2010-01-31}
   s.default_executable = %q{epic}
   s.description = %q{Epic validator, wraps validation for HTML, JavaScript and CSS.}
   s.email = %q{progressions@gmail.com}
@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "bin/epic",
      "epic.gemspec",
-     "features/compressor.feature",
+     "features/closure_compressor.feature",
      "features/data/html/invalid.html",
      "features/data/html/valid.html",
      "features/data/javascripts/invalid.js",
@@ -44,9 +44,13 @@ Gem::Specification.new do |s|
      "features/step_definitions/validator_steps.rb",
      "features/support/env.rb",
      "features/validator.feature",
+     "features/yui_compressor.feature",
      "lib/epic.rb",
      "lib/epic/base.rb",
      "lib/epic/compressor.rb",
+     "lib/epic/compressor/base.rb",
+     "lib/epic/compressor/closure.rb",
+     "lib/epic/compressor/yui.rb",
      "lib/epic/errors.rb",
      "lib/epic/validator.rb",
      "lib/epic/validator/base.rb",
@@ -59,6 +63,7 @@ Gem::Specification.new do |s|
      "spec/spec_helper.rb",
      "spec/stubs.rb",
      "spec/validator_spec.rb",
+     "vendor/ext/compiler.jar",
      "vendor/ext/js.jar",
      "vendor/ext/jslint.js",
      "vendor/ext/yuicompressor-2.4.2.jar"

@@ -23,6 +23,21 @@ Feature: Compress JavaScript and Stylesheet files
     Given I compress the file "javascripts/nonexistent.js"
     Then an exception should have been raised with the message "No such file or directory"
     
+
+  Scenario: Compress a valid JavaScript file to a destination
+    Given I compress the file "javascripts/valid_uncompressed.js" to "features/data/javascripts/valid_uncompressed.js.compressed"
+    And I open the file "javascripts/valid_uncompressed.js.compressed"
+    Then I should see "var hello\=function\(a\)"
+    And no exceptions should have been raised
+    And I remove the file "javascripts/valid_uncompressed.js.compressed"    
+    
+  
+  Scenario: Compress a valid JavaScript file to a destination with a full path
+    Given I compress the file "javascripts/valid_uncompressed.js" to "/valid_uncompressed.js.compressed"
+    And I open the file "/valid_uncompressed.js.compressed"
+    Then I should see "var hello\=function\(a\)"
+    And no exceptions should have been raised
+    And I remove the file "/valid_uncompressed.js.compressed"    
     
     
     
