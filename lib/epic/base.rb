@@ -1,6 +1,6 @@
 module Epic #:nodoc
   class Configuration
-    attr_accessor :base_path, :tmp_path, :doctype, :jslint_settings, :compressor
+    attr_accessor :base_path, :tmp_path, :vendor_path, :doctype, :jslint_settings, :compressor
   end
   
   class Base
@@ -33,6 +33,10 @@ module Epic #:nodoc
     
     def tmp_path
       configuration.tmp_path || "#{base_path}/tmp" || ""
+    end
+
+    def vendor_path
+      @vendor_path ||= configuration.vendor_path || File.join(File.dirname(__FILE__), "..", "..", "vendor", "ext")
     end
   end
 end

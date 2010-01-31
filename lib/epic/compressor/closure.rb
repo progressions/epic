@@ -19,6 +19,10 @@ module Epic #:nodoc:
         command = "java -jar #{compressor_path} --js #{path} -js_output_file #{compressed_path} 2>&1"
         result = F.execute(command, :return => true)          
       end
+      
+      def convert_params_to_string(params={})
+        ""
+      end
 
       # set options and defaults
       #
@@ -27,9 +31,9 @@ module Epic #:nodoc:
       end
   
       def compressor_path
-        compressor_path = File.expand_path("#{vendor_path}/ext/compiler.jar")
-        raise "#{compressor_path} does not exist" unless File.exists?(compressor_path)
-        compressor_path
+        @compressor_path ||= File.expand_path("#{vendor_path}/compiler.jar")
+        raise "#{@compressor_path} does not exist" unless File.exists?(@compressor_path)
+        @compressor_path
       end
     end
   end

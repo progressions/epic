@@ -20,13 +20,6 @@ module Epic #:nodoc:
         result = F.execute(command, :return => true)          
       end
 
-      # join the options together for appending to the command line
-      #
-      def convert_params_to_string(params)
-        options = parse_options(params)
-        options.map {|k,v| "--#{k} #{v}"}.join(" ")
-      end
-
       # set options and defaults
       #
       def parse_options(options)
@@ -41,7 +34,7 @@ module Epic #:nodoc:
         end
         options["charset"] = "utf-8"
 
-        if options["type"].to_s == "js" && !options["preserve_semi"]
+        if options["type"] == "js" && !options["preserve_semi"]
           options["preserve-semi"] = ""
         end 
       
@@ -49,7 +42,7 @@ module Epic #:nodoc:
       end
   
       def compressor_path
-        compressor_path = File.expand_path("#{vendor_path}/ext/yuicompressor-2.4.2.jar")
+        compressor_path = File.expand_path("#{vendor_path}/yuicompressor-2.4.2.jar")
         raise "#{compressor_path} does not exist" unless File.exists?(compressor_path)
         compressor_path
       end

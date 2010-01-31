@@ -108,9 +108,5 @@ module Epic #:nodoc:
     def compressed_display_path
       @compressed_display_path ||= display_path(path)
     end
-
-    def vendor_path
-      File.join(File.dirname(__FILE__), "..", "..", "..", "vendor")
-    end
   end
 end

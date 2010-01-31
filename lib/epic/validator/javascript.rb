@@ -18,19 +18,15 @@ module Epic #:nodoc:
       end
 
       def jslint_path
-        jslint_path = File.expand_path("#{vendor_path}/ext/jslint.js")
+        jslint_path = File.expand_path("#{vendor_path}/jslint.js")
         raise "#{jslint_path} does not exist" unless File.exists?(jslint_path)
         jslint_path
       end
       
       def rhino_path
-        rhino_path = File.expand_path("#{vendor_path}/ext/js.jar")
+        rhino_path = File.expand_path("#{vendor_path}/js.jar")
         raise "#{rhino_path} does not exist" unless File.exists?(rhino_path)
         rhino_path
-      end
-      
-      def vendor_path
-        File.join(File.dirname(__FILE__), "..", "..", "..", "vendor")
       end
       
       def valid_results?(results)

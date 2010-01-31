@@ -5,15 +5,20 @@ $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir)
 
 require 'epic'
 
-file = ARGV[0]
+command = ARGV[0]
+file = ARGV[1]
 
 Epic::Validator::Base.configure do |config|
   config.base_path = "./"
   config.tmp_path = "./tmp"
 end
 
-if file =~ /.js$/
-  Epic::Validator::JavaScript.new.validate(file)
+if command.downcase == "validate" || command.downcase == "v"
+  if file =~ /.js$/
+    Epic::Validator::JavaScript.new.validate(file)
+  end
+elsif command.downcase == "compress" || command.downcase == "c"
+  Epic::Compressor.new(file).compress
 end
 
 system "rm -rf ./tmp"
